@@ -9,27 +9,123 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExpansesRouteImport } from './routes/expanses'
+import { Route as GoalsRouteImport } from './routes/goals'
+import { Route as HabitsRouteImport } from './routes/habits'
+import { Route as SettingsRouteImport } from './routes/settings'
 
-export interface FileRoutesByFullPath {}
-export interface FileRoutesByTo {}
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpansesRoute = ExpansesRouteImport.update({
+  id: '/expanses',
+  path: '/expanses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GoalsRoute = GoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HabitsRoute = HabitsRouteImport.update({
+  id: '/habits',
+  path: '/habits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/expanses': typeof ExpansesRoute
+  '/goals': typeof GoalsRoute
+  '/habits': typeof HabitsRoute
+  '/settings': typeof SettingsRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/expanses': typeof ExpansesRoute
+  '/goals': typeof GoalsRoute
+  '/habits': typeof HabitsRoute
+  '/settings': typeof SettingsRoute
+}
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/expanses': typeof ExpansesRoute
+  '/goals': typeof GoalsRoute
+  '/habits': typeof HabitsRoute
+  '/settings': typeof SettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths: '/' | '/expanses' | '/goals' | '/habits' | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/' | '/expanses' | '/goals' | '/habits' | '/settings'
+  id: '__root__' | '/' | '/expanses' | '/goals' | '/habits' | '/settings'
   fileRoutesById: FileRoutesById
 }
-export interface RootRouteChildren {}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  ExpansesRoute: typeof ExpansesRoute
+  GoalsRoute: typeof GoalsRoute
+  HabitsRoute: typeof HabitsRoute
+  SettingsRoute: typeof SettingsRoute
 }
 
-const rootRouteChildren: RootRouteChildren = {}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expanses': {
+      id: '/expanses'
+      path: '/expanses'
+      fullPath: '/expanses'
+      preLoaderRoute: typeof ExpansesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/goals': {
+      id: '/goals'
+      path: '/goals'
+      fullPath: '/goals'
+      preLoaderRoute: typeof GoalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/habits': {
+      id: '/habits'
+      path: '/habits'
+      fullPath: '/habits'
+      preLoaderRoute: typeof HabitsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  ExpansesRoute: ExpansesRoute,
+  GoalsRoute: GoalsRoute,
+  HabitsRoute: HabitsRoute,
+  SettingsRoute: SettingsRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
